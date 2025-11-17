@@ -1,9 +1,10 @@
-/// <reference path="./deno.d.ts" />
-
 // @ts-ignore - Deno URL imports are supported in Supabase Edge Functions runtime
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 
-const BREVO_API_KEY = process.env.BREVO_API_KEY as string; // Brevo (Sendinblue) API key
+// Ambient Deno type for editor/TS satisfaction (Supabase runs on Deno runtime)
+declare const Deno: { env: { get(name: string): string | undefined } };
+
+const BREVO_API_KEY = Deno.env.get("BREVO_API_KEY"); // Brevo (Sendinblue) API key
 console.log("Brevo API Key configured:", !!BREVO_API_KEY);
 
 const corsHeaders = {
@@ -33,6 +34,13 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    if (!BREVO_API_KEY) {
+      return new Response(JSON.stringify({ error: "BREVO_API_KEY not configured" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
     const formData: ContactFormData = await req.json();
     console.log("Received contact form data:", formData);
     const { firstName, lastName, email, phone, message } = formData;
@@ -49,7 +57,7 @@ const handler = async (req: Request): Promise<Response> => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "api-key": BREVO_API_KEY!,
+        "api-key": BREVO_API_KEY,
       },
       body: JSON.stringify({
         sender: {

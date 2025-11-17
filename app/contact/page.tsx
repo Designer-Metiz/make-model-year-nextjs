@@ -135,7 +135,6 @@
                              {...field}
                              type="tel"
                              inputMode="numeric"
-                             pattern="^[0-9+() .-]+$"
                              className="border-gray-300 focus:border-primary focus:ring-primary"
                            />
                          </FormControl>
