@@ -1,4 +1,5 @@
 import './globals.css';
+import Script from 'next/script';
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: {
@@ -43,12 +44,27 @@ export const metadata = {
   icons: {
     icon: '/favicon.ico',
   },
+  verification: {
+    google: 'CMytYuT0pIESVq4wKjt-iVkDggavO4IcuoeDtiLeQH8',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body suppressHydrationWarning={true}>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-X6F1D16YWQ"
+          strategy="afterInteractive"
+        />
+        <Script id="ga-gtag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-X6F1D16YWQ');
+          `}
+        </Script>
         {children}
       </body>
     </html>

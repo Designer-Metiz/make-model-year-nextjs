@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 const Header = () => {
   return (
@@ -25,27 +26,27 @@ const Header = () => {
         </div>
         
         <nav className="hidden lg:flex items-center gap-8 text-sm font-medium flex-1 justify-center">
-          <a className="transition-colors hover:text-primary text-foreground/80" href="#features">
+          <Link className="transition-colors hover:text-primary text-foreground/80" href="/#features">
             Features
-          </a>
-          <a className="transition-colors hover:text-primary text-foreground/80" href="#how-it-works">
+          </Link>
+          <Link className="transition-colors hover:text-primary text-foreground/80" href="/#how-it-works">
             How It Works
-          </a>
-          <a className="transition-colors hover:text-primary text-foreground/80" href="#pricing">
+          </Link>
+          <Link className="transition-colors hover:text-primary text-foreground/80" href="/#pricing">
             Pricing
-          </a>
-          <a className="transition-colors hover:text-primary text-foreground/80" href="#testimonials">
+          </Link>
+          <Link className="transition-colors hover:text-primary text-foreground/80" href="/#testimonials">
             Testimonials
-          </a>
-          <a className="transition-colors hover:text-primary text-foreground/80" href="#faq">
+          </Link>
+          <Link className="transition-colors hover:text-primary text-foreground/80" href="/#faq">
             FAQ
-          </a>
-          <a className="transition-colors hover:text-primary text-foreground/80" href="/blog">
+          </Link>
+          <Link className="transition-colors hover:text-primary text-foreground/80" href="/blog">
             Blog
-          </a>
-          <a className="transition-colors hover:text-primary text-foreground/80" href="#contact">
+          </Link>
+          <Link className="transition-colors hover:text-primary text-foreground/80" href="/contact">
             Contact
-          </a>
+          </Link>
         </nav>
 
         <div className="flex items-center gap-4">

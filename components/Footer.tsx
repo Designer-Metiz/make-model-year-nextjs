@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Facebook, Instagram, Youtube } from "lucide-react";
+import Link from "next/link";
  
 const Footer = () => {
   return (
@@ -23,14 +24,14 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#features" className="text-white hover:text-gray-300 transition-colors">
+                <Link href="/#features" className="text-white hover:text-gray-300 transition-colors">
                   Features
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#pricing" className="text-white hover:text-gray-300 transition-colors">
+                <Link href="/#pricing" className="text-white hover:text-gray-300 transition-colors">
                   Pricing
-                </a>
+                </Link>
               </li>
               <li>
                 <a
@@ -48,14 +49,14 @@ const Footer = () => {
             <h3 className="text-sm font-semibold tracking-wide text-white mb-4 uppercase">Support</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-white hover:text-gray-300 transition-colors">
+                <Link href="/contact" className="text-white hover:text-gray-300 transition-colors">
                   Contact Support
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#faq" className="text-white hover:text-gray-300 transition-colors">
+                <Link href="/#faq" className="text-white hover:text-gray-300 transition-colors">
                   FAQ
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#" className="text-white hover:text-gray-300 transition-colors">

@@ -25,6 +25,29 @@ export class BlogServiceServer {
     return data || [];
   }
 
+  static async getPostsByTag(tag: string): Promise<BlogPost[]> {
+    const supabase = supabaseServer();
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('published', true)
+      // Assuming tags is a text[] column
+      .contains('tags', [tag])
+      .order('created_at', { ascending: false });
+    if (error) {
+      console.error('[BlogServiceServer] getPostsByTag error:', error, 'tag=', tag);
+      try {
+        const fallback = await LocalBlogService.getPostsByTag(tag);
+        console.warn('[BlogServiceServer] Falling back to LocalBlogService getPostsByTag:', fallback.length);
+        return fallback;
+      } catch (e) {
+        console.error('[BlogServiceServer] Local getPostsByTag fallback failed:', e);
+        return [];
+      }
+    }
+    return data || [];
+  }
+
   static async searchPosts(query: string): Promise<BlogPost[]> {
     const supabase = supabaseServer();
     const { data, error } = await supabase
