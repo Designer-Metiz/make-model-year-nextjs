@@ -47,6 +47,7 @@
     "lucide-react": "^0.546.0",
     "next": "^16.0.0",
     "next-themes": "^0.4.6",
+    "nodemailer": "^7.0.10",
     "react": "18.2.0",
     "react-day-picker": "^9.11.1",
     "react-dom": "18.2.0",
@@ -61,13 +62,14 @@
   },
   "devDependencies": {
     "@hookform/resolvers": "^3.3.2",
+    "@types/nodemailer": "^6.4.15",
     "@types/react": "19.2.2",
     "autoprefixer": "^10.4.19",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "14.2.13",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^16.0.3",
     "next-sitemap": "^4.2.3",
     "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.10",
+    "tailwindcss": "^3.4.19",
     "typescript": "^5.6.2"
   }
 }

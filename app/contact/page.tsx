@@ -9,9 +9,8 @@
  import { Textarea } from "@/components/ui/textarea";
  import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
  import { Phone, Mail, MapPin, ArrowRight } from "lucide-react";
- import { toast } from "sonner";
- import { supabase } from "@/lib/supabase";
- import Header from "@/components/Header";
+import { toast } from "sonner";
+import Header from "@/components/Header";
  import Footer from "@/components/Footer";
  
  const contactFormSchema = z.object({
@@ -41,19 +40,31 @@
      },
    });
  
-   const onSubmit = async (data: ContactFormData) => {
-     setIsSubmitting(true);
-     try {
-       const { error } = await supabase.functions.invoke("send-contact-email", { body: data });
-       if (error) throw error;
-       toast.success("Message sent successfully! We'll get back to you soon.");
-       form.reset();
-     } catch (err) {
-       toast.error("Failed to send message. Please try again.");
-     } finally {
-       setIsSubmitting(false);
-     }
-   };
+  const onSubmit = async (data: ContactFormData) => {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to send message');
+      }
+
+      toast.success("Message sent successfully! We'll get back to you soon.");
+      form.reset();
+    } catch (err: any) {
+      toast.error(err.message || "Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
  
    return (
      <div className="min-h-screen bg-gray-50">

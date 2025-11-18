@@ -52,8 +52,8 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <head>
-        {/* Google tag (gtag.js) */}
+      <body suppressHydrationWarning={true}>
+        {/* Google tag (gtag.js) - Next.js will automatically inject these into head */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-X6F1D16YWQ"
           strategy="afterInteractive"
@@ -66,8 +66,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             gtag('config', 'G-X6F1D16YWQ');
           `}
         </Script>
-      </head>
-      <body suppressHydrationWarning={true}>
         {children}
       </body>
     </html>
