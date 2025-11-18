@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     const smtpUser = process.env.SMTP_USERNAME;
     const smtpPass = process.env.SMTP_PASSWORD;
     const smtpFrom = process.env.SMTP_FROM || smtpUser;
-    const smtpTo = process.env.SMTP_TO || 'xyz@gmail.com'; // Default recipient
+    const smtpTo = process.env.SMTP_TO || 'hello@metizsoft.com'; // Default recipient
 
     if (!smtpHost || !smtpUser || !smtpPass) {
       console.error('SMTP configuration incomplete');

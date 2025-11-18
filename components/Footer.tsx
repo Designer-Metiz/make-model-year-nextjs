@@ -58,11 +58,11 @@ const Footer = () => {
                   FAQ
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <a href="#" className="text-white hover:text-gray-300 transition-colors">
                   Installation Guide
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a href="/blog" className="text-white hover:text-gray-300 transition-colors">
                   Blog
@@ -73,8 +73,8 @@ const Footer = () => {
         </div>
        
         {/* Newsletter Section */}
-        <div className="mt-12 pt-8 border-t border-slate-800">
-          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+        <div className="pt-8 border-slate-800">
+          {/* <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
             <div className="flex flex-col items-center md:items-start">
               <h3 className="text-sm font-semibold tracking-wide text-white mb-3 uppercase">Stay Updated</h3>
               <div className="flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800/60 p-1 pl-4 max-w-sm">
@@ -100,9 +100,9 @@ const Footer = () => {
                 <Youtube className="h-4 w-4" />
               </a>
             </div>
-          </div>
+          </div> */}
          
-          <div className="mt-8 pt-6 border-t border-slate-800">
+          <div className="pt-6 border-t border-slate-800">
             <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
               <div className="flex gap-6">
                 <a href="#" className="text-sm text-white hover:text-gray-300 transition-colors">
