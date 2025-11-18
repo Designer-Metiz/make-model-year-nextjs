@@ -26,27 +26,45 @@ const pricingFeatures = [
 const carouselFeatures = [
   {
     id: 1,
-    title: "Cars",
-    description: "Easy to import attribute values using CSV File",
-    image: "/assets/cars-feature.png"
+    title: "Fully Responsive All Devices",
+    description: "Perfect experience across desktop, tablet, and mobile devices",
+    image: "/assets/Fully-Responsive-All-Devices.png",
+    alt: "Auto parts store with Make Model Year search widget"
   },
   {
     id: 2,
-    title: "Fully Responsive All Devices",
-    description: "Perfect experience across desktop, tablet, and mobile devices",
-    image: "/assets/responsive-feature.png"
+    title: "Tag Lists",
+    description: "Easy to add tag lists for cars/auto parts",
+    image: "/assets/tag-list.png",
+    alt: "Product page showing vehicle compatibility info"
   },
   {
     id: 3,
-    title: "Tag Lists",
-    description: "Easy to add tag lists for cars/auto parts",
-    image: "/assets/tag-lists-feature.png"
+    title: "Settings",
+    description: "Easy to design search box and set background color, text, font etc.",
+    image: "/assets/settings.png",
+    alt: "Shopify admin showing makemodelyear settings"
   },
   {
     id: 4,
-    title: "Settings",
-    description: "Easy to design search box and set background color, text, font etc...",
-    image: "/assets/settings-feature.png"
+    title: "Bulk CSV",
+    description: "Easy to import attribute values using CSV file",
+    image: "/assets/Bulk-CSV.png",
+    alt: "Bulk CSV import screen for vehicle fitment data"
+  },
+  {
+    id: 5,
+    title: "Searchbox",
+    description: "Easy to search products by attributes/fields",
+    image: "/assets/Search.png",
+    alt: "Demo store homepage with fitment search in header"
+  },
+  {
+    id: 6,
+    title: "Attributes",
+    description: "Easy to create and edit attributes",
+    image: "/assets/Attributes.png",
+    alt: "App dashboard with Make, Model, Year attributes."
   }
 ];
  
@@ -154,7 +172,7 @@ const PricingAndFeatures = () => {
                           <div className="aspect-video relative overflow-hidden rounded-lg">
                             <Image
                               src={feature.image}
-                              alt={feature.title}
+                              alt={feature.alt}
                               className="w-full h-full object-cover"
                               width={1200}
                               height={675}

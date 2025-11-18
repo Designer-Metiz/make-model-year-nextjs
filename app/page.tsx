@@ -1,7 +1,7 @@
 export const generateMetadata = () => ({
   title: 'Make Model Year | Discover the Best Vehicle Insights',
   description:
-    'Discover and connect with local businesses using our advanced store locator technology. Find stores, get directions, and explore business directories with ease. Perfect for businesses looking to improve their local presence.',
+    'Find the right auto parts with our Make Model Year search for Shopify. Boost accuracy, reduce returns, and grow sales. Try it now.',
   keywords: [
     'store locator',
     'business directory',
@@ -15,7 +15,7 @@ export const generateMetadata = () => ({
   openGraph: {
     title: 'Make Model Year | Discover the Best Vehicle Insights',
     description:
-      'Discover and connect with local businesses using our advanced store locator technology. Find stores, get directions, and explore business directories with ease. Perfect for businesses looking to improve their local presence.',
+      'Find the right auto parts with our Make Model Year search for Shopify. Boost accuracy, reduce returns, and grow sales. Try it now.',
     type: 'website',
     url: '/',
   },

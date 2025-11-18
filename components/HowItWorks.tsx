@@ -34,7 +34,7 @@ const HowItWorks = () => {
       <div className="container mx-auto px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            How It Works
+          How Auto Parts Finder Pro Works 
           </h2>
           <div className="mx-auto mt-3 h-1 w-28 rounded-full bg-gradient-to-r from-blue-500/70 via-purple-500 to-blue-500/70" />
           <p className="mt-6 text-lg text-muted-foreground">

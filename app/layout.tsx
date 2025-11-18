@@ -52,7 +52,8 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body suppressHydrationWarning={true}>
+      <head>
+        {/* Google tag (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-X6F1D16YWQ"
           strategy="afterInteractive"
@@ -65,6 +66,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             gtag('config', 'G-X6F1D16YWQ');
           `}
         </Script>
+      </head>
+      <body suppressHydrationWarning={true}>
         {children}
       </body>
     </html>

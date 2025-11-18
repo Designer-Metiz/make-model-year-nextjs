@@ -4,7 +4,10 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 // Ambient Deno type for editor/TS satisfaction (Supabase runs on Deno runtime)
 declare const Deno: { env: { get(name: string): string | undefined } };
 
-const BREVO_API_KEY = Deno.env.get("BREVO_API_KEY"); // Brevo (Sendinblue) API key
+// Support both env var names to match older deployments
+const BREVO_API_KEY =
+  Deno.env.get("BREVO_API_KEY") ||
+  Deno.env.get("RESEND_API_KEY"); // Back-compat with old config
 console.log("Brevo API Key configured:", !!BREVO_API_KEY);
 
 const corsHeaders = {

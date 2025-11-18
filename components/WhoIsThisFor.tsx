@@ -29,7 +29,7 @@ const WhoIsThisFor = () => {
       <div className="container mx-auto px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Who Is This App For?
+          Who Needs the Make Model Year App? 
           </h2>
           <div className="mx-auto mt-3 h-1 w-28 rounded-full bg-gradient-to-r from-primary/70 via-primary to-primary/70" />
           <p className="mt-6 text-lg text-muted-foreground">

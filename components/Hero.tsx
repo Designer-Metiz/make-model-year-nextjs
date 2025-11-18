@@ -13,12 +13,12 @@ const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
           {/* Left Content */}
           <div className="text-center lg:text-left">
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-[1.6]" style={{ color: '#1c154c' }}>
-              <span style={{ color: '#f97316' }}>Find the Right Parts</span> in Seconds with <span style={{ color: '#f97316' }}>Shopify Fitment App</span>
+            <h1 className="text-4xl lg:text-[3.25rem] font-bold mb-6 leading-[1.1]" style={{ color: '#1c154c' }}>
+              <span style={{ color: '#f97316' }}>Find Auto Parts in </span> Seconds with Smart<span style={{ color: '#f97316' }}> Make Model Year </span> <span>Search</span>
             </h1>
  
             <p className="text-xl text-muted-foreground mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Easily manage vehicle fitment data with bulk CSV import
+            Shopify Make Model Year search that improves accuracy, sales, and customer experience. 
             </p>
  
             <div className="flex flex-col sm:flex-row gap-4 mb-8 max-w-md mx-auto lg:mx-0">
@@ -64,7 +64,7 @@ const Hero = () => {
               <div className="relative bg-gray-200 rounded-lg p-3 shadow-2xl">
                 <Image
                   src="/assets/bulk-csv-import.png"
-                  alt="Bulk CSV import screen for vehicle fitment data"
+                  alt="Shopper using a Make-Model-Year dropdown filter on an auto parts Shopify store"
                   className="w-full rounded-md object-contain"
                   width={1200}
                   height={800}
