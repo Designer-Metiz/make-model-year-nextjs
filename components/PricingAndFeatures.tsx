@@ -42,7 +42,7 @@ const carouselFeatures = [
     id: 3,
     title: "Settings",
     description: "Easy to design search box and set background color, text, font etc.",
-    image: "/assets/settings.png",
+    image: "/assets/Settings.png",
     alt: "Shopify admin showing makemodelyear settings"
   },
   {

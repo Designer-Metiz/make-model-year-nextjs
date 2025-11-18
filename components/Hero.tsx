@@ -63,7 +63,7 @@ const Hero = () => {
               {/* Clean laptop mockup frame */}
               <div className="relative bg-gray-200 rounded-lg p-3 shadow-2xl">
                 <Image
-                  src="/assets/bulk-csv-import.png"
+                  src="/assets/Fully-Responsive-All-Devices.png"
                   alt="Shopper using a Make-Model-Year dropdown filter on an auto parts Shopify store"
                   className="w-full rounded-md object-contain"
                   width={1200}
