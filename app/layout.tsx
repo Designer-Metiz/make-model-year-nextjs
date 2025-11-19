@@ -30,7 +30,7 @@ export const metadata = {
     description:
       'Discover and connect with local businesses using our advanced store locator technology. Find stores, get directions, and explore business directories with ease.',
     url: '/',
-    images: ['/assets/new-logo.png'],
+    images: ['/assets/Make-Model-year-logo-blueBG.png'],
   },
   twitter: {
     card: 'summary_large_image',
@@ -39,10 +39,15 @@ export const metadata = {
     title: 'Make Model Year',
     description:
       'Discover and connect with local businesses using our advanced store locator technology. Find stores, get directions, and explore business directories with ease.',
-    images: ['/assets/new-logo.png'],
+    images: ['/assets/Make-Model-year-logo-blueBG.png'],
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/assets/Make-Model-year-logo-blueBG.png', sizes: '32x32', type: 'image/png' },
+      { url: '/assets/Make-Model-year-logo-blueBG.png', sizes: '16x16', type: 'image/png' },
+    ],
+    shortcut: '/assets/Make-Model-year-logo-blueBG.png',
+    apple: '/assets/Make-Model-year-logo-blueBG.png',
   },
   verification: {
     google: 'CMytYuT0pIESVq4wKjt-iVkDggavO4IcuoeDtiLeQH8',
