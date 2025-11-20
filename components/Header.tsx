@@ -50,13 +50,13 @@ const Header = () => {
         </nav>
 
         <div className="flex items-center gap-4">
-          <Button 
+          {/* <Button 
             variant="ghost" 
             className="text-foreground/80 hover:text-primary"
             onClick={() => window.open('https://apps.shopify.com/make-model-year', '_blank')}
           >
             Sign up
-          </Button>
+          </Button> */}
           <Button 
             className="bg-primary hover:bg-primary-dark text-primary-foreground px-6"
             onClick={() => window.open('https://apps.shopify.com/make-model-year', '_blank')}

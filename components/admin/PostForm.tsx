@@ -402,120 +402,478 @@ const PostForm: React.FC<{ postId?: string }> = ({ postId }) => {
                   <FormField
                     control={form.control}
                     name="content"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Content</FormLabel>
-                        <FormControl>
-                          <div className="border border-gray-300 rounded-lg">
-                            {/* Rich Text Editor Toolbar */}
-                            <div className="border-b border-gray-300 p-2 bg-gray-50 flex flex-wrap items-center gap-1">
-                              {/* Text Style Dropdown */}
-                              <select className="border border-gray-300 rounded px-2 py-1 text-sm bg-white">
-                                <option>Normal</option>
-                                <option>Heading 1</option>
-                                <option>Heading 2</option>
-                                <option>Heading 3</option>
-                                <option>Heading 4</option>
-                                <option>Heading 5</option>
-                                <option>Heading 6</option>
-                              </select>
+                    render={({ field }) => {
+                      const contentRef = React.useRef<HTMLDivElement>(null);
+                      const isInitializingRef = React.useRef(false);
+                      
+                      // Initialize content when field value changes (only if different)
+                      React.useEffect(() => {
+                        if (contentRef.current && !isInitializingRef.current) {
+                          const currentContent = contentRef.current.innerHTML.trim();
+                          const fieldContent = (field.value || '').trim();
+                          
+                          // Only update if content is actually different
+                          if (currentContent !== fieldContent) {
+                            isInitializingRef.current = true;
+                            contentRef.current.innerHTML = field.value || '';
+                            // Reset flag after a brief delay
+                            setTimeout(() => {
+                              isInitializingRef.current = false;
+                            }, 0);
+                          }
+                        }
+                      }, [field.value]);
+
+                      const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+                        e.preventDefault();
+                        const clipboardData = e.clipboardData;
+                        
+                        if (!contentRef.current) return;
+                        
+                        // Function to convert paragraphs with bullet characters to proper lists
+                        const convertToLists = (container: HTMLElement) => {
+                          // Get all text nodes and elements that might contain list items
+                          const walker = document.createTreeWalker(
+                            container,
+                            NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT,
+                            null
+                          );
+                          
+                          const elementsToProcess: HTMLElement[] = [];
+                          let node: Node | null;
+                          
+                          while (node = walker.nextNode()) {
+                            if (node.nodeType === Node.ELEMENT_NODE) {
+                              const element = node as HTMLElement;
+                              // Check paragraphs, divs, and spans that might contain list items
+                              if (['P', 'DIV', 'SPAN', 'LI'].includes(element.tagName)) {
+                                elementsToProcess.push(element);
+                              }
+                            }
+                          }
+                          
+                          // Process elements and convert bullet points to lists
+                          elementsToProcess.forEach((element) => {
+                            const text = element.textContent || '';
+                            const trimmed = text.trim();
+                            
+                            // Skip if already in a proper list
+                            if (element.closest('ul, ol')) {
+                              return;
+                            }
+                            
+                            // Check for bullet points (various bullet characters)
+                            const bulletMatch = trimmed.match(/^[\u2022\u25E6\u25AA\u2013\u2014\u2219\u00B7\*\-\+]\s*(.+)$/);
+                            if (bulletMatch) {
+                              const listItem = document.createElement('li');
+                              // Preserve any formatting inside
+                              listItem.innerHTML = element.innerHTML.replace(/^[\u2022\u25E6\u25AA\u2013\u2014\u2219\u00B7\*\-\+]\s*/, '');
                               
-                              {/* Text Formatting */}
-                              <div className="flex items-center border-r border-gray-300 pr-2 mr-2">
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Bold className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Italic className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Underline className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Strikethrough className="h-4 w-4" />
-                                </Button>
+                              // Find or create ul
+                              let ul = element.previousElementSibling as HTMLUListElement;
+                              if (!ul || ul.tagName !== 'UL') {
+                                ul = document.createElement('ul');
+                                element.parentNode?.insertBefore(ul, element);
+                              }
+                              ul.appendChild(listItem);
+                              element.remove();
+                            }
+                            // Check for numbered list items
+                            else {
+                              const numberedMatch = trimmed.match(/^(\d+)[\.\)]\s*(.+)$/);
+                              if (numberedMatch) {
+                                const listItem = document.createElement('li');
+                                // Preserve any formatting inside
+                                listItem.innerHTML = element.innerHTML.replace(/^\d+[\.\)]\s*/, '');
+                                
+                                // Find or create ol
+                                let ol = element.previousElementSibling as HTMLOListElement;
+                                if (!ol || ol.tagName !== 'OL') {
+                                  ol = document.createElement('ol');
+                                  element.parentNode?.insertBefore(ol, element);
+                                }
+                                ol.appendChild(listItem);
+                                element.remove();
+                              }
+                            }
+                          });
+                          
+                          // Clean up existing lists
+                          container.querySelectorAll('ul, ol').forEach((list) => {
+                            // Remove any non-li direct children
+                            Array.from(list.children).forEach((child) => {
+                              if (child.tagName !== 'LI') {
+                                const li = document.createElement('li');
+                                li.innerHTML = child.innerHTML;
+                                list.replaceChild(li, child);
+                              }
+                            });
+                            
+                            // Remove empty list items
+                            Array.from(list.querySelectorAll('li')).forEach((li) => {
+                              if (!li.textContent?.trim() && !li.innerHTML.trim()) {
+                                li.remove();
+                              }
+                            });
+                          });
+                          
+                          // Wrap orphan li elements
+                          container.querySelectorAll('li').forEach((li) => {
+                            const parent = li.parentElement;
+                            if (!parent || (parent.tagName !== 'UL' && parent.tagName !== 'OL')) {
+                              const ul = document.createElement('ul');
+                              li.parentNode?.insertBefore(ul, li);
+                              ul.appendChild(li);
+                            }
+                          });
+                        };
+                        
+                        // Try to get HTML first
+                        let pastedData = clipboardData.getData('text/html');
+                        const plainText = clipboardData.getData('text/plain');
+                        
+                        // Process HTML if available
+                        if (pastedData && pastedData.trim() !== '') {
+                          const tempDiv = document.createElement('div');
+                          tempDiv.innerHTML = pastedData;
+                          
+                          // Convert any bullet points in paragraphs to proper lists
+                          convertToLists(tempDiv);
+                          
+                          pastedData = tempDiv.innerHTML;
+                        } 
+                        // If no HTML, process plain text
+                        else if (plainText) {
+                          const lines = plainText.split(/\r?\n/);
+                          const result: string[] = [];
+                          let inList = false;
+                          let listType: 'ul' | 'ol' | null = null;
+                          
+                          lines.forEach((line) => {
+                            const trimmed = line.trim();
+                            
+                            // Check for bullet points
+                            const bulletMatch = trimmed.match(/^[\u2022\u25E6\u25AA\u2013\u2014\u2219\u00B7\*\-\+]\s*(.+)$/);
+                            if (bulletMatch) {
+                              if (!inList || listType !== 'ul') {
+                                if (inList && listType === 'ol') {
+                                  result.push('</ol>');
+                                }
+                                result.push('<ul>');
+                                inList = true;
+                                listType = 'ul';
+                              }
+                              result.push(`<li>${bulletMatch[1]}</li>`);
+                            }
+                            // Check for numbered lists
+                            else {
+                              const numberedMatch = trimmed.match(/^(\d+)[\.\)]\s*(.+)$/);
+                              if (numberedMatch) {
+                                if (!inList || listType !== 'ol') {
+                                  if (inList && listType === 'ul') {
+                                    result.push('</ul>');
+                                  }
+                                  result.push('<ol>');
+                                  inList = true;
+                                  listType = 'ol';
+                                }
+                                result.push(`<li>${numberedMatch[2]}</li>`);
+                              }
+                              // Regular content
+                              else {
+                                if (inList) {
+                                  result.push(listType === 'ul' ? '</ul>' : '</ol>');
+                                  inList = false;
+                                  listType = null;
+                                }
+                                if (trimmed) {
+                                  result.push(`<p>${trimmed}</p>`);
+                                } else {
+                                  result.push('<br>');
+                                }
+                              }
+                            }
+                          });
+                          
+                          // Close any open list
+                          if (inList) {
+                            result.push(listType === 'ul' ? '</ul>' : '</ol>');
+                          }
+                          
+                          pastedData = result.join('');
+                        }
+                        
+                        if (pastedData && contentRef.current) {
+                          const selection = window.getSelection();
+                          if (selection && selection.rangeCount > 0) {
+                            const range = selection.getRangeAt(0);
+                            range.deleteContents();
+                            
+                            // Create a temporary container to parse HTML
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = pastedData;
+                            
+                            // Final cleanup to ensure proper list structure
+                            convertToLists(tempDiv);
+                            
+                            // Preserve list formatting and other HTML elements
+                            const fragment = document.createDocumentFragment();
+                            Array.from(tempDiv.childNodes).forEach(node => {
+                              fragment.appendChild(node.cloneNode(true));
+                            });
+                            
+                            range.insertNode(fragment);
+                            
+                            // Move cursor after inserted content
+                            if (fragment.lastChild) {
+                              range.setStartAfter(fragment.lastChild);
+                            }
+                            range.collapse(true);
+                            selection.removeAllRanges();
+                            selection.addRange(range);
+                            
+                            // Update form field
+                            field.onChange(contentRef.current.innerHTML);
+                          }
+                        }
+                      };
+
+                      const handleInput = () => {
+                        if (contentRef.current && !isInitializingRef.current) {
+                          field.onChange(contentRef.current.innerHTML);
+                        }
+                      };
+
+                      const handleBlur = () => {
+                        if (contentRef.current) {
+                          field.onChange(contentRef.current.innerHTML);
+                        }
+                      };
+
+                      return (
+                        <FormItem>
+                          <FormLabel>Content</FormLabel>
+                          <FormControl>
+                            <div className="border border-gray-300 rounded-lg">
+                              {/* Rich Text Editor Toolbar */}
+                              <div className="border-b border-gray-300 p-2 bg-gray-50 flex flex-wrap items-center gap-1">
+                                {/* Text Style Dropdown */}
+                                <select className="border border-gray-300 rounded px-2 py-1 text-sm bg-white">
+                                  <option>Normal</option>
+                                  <option>Heading 1</option>
+                                  <option>Heading 2</option>
+                                  <option>Heading 3</option>
+                                  <option>Heading 4</option>
+                                  <option>Heading 5</option>
+                                  <option>Heading 6</option>
+                                </select>
+                                
+                                {/* Text Formatting */}
+                                <div className="flex items-center border-r border-gray-300 pr-2 mr-2">
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0"
+                                    onClick={() => document.execCommand('bold', false)}
+                                  >
+                                    <Bold className="h-4 w-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0"
+                                    onClick={() => document.execCommand('italic', false)}
+                                  >
+                                    <Italic className="h-4 w-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0"
+                                    onClick={() => document.execCommand('underline', false)}
+                                  >
+                                    <Underline className="h-4 w-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0"
+                                    onClick={() => document.execCommand('strikeThrough', false)}
+                                  >
+                                    <Strikethrough className="h-4 w-4" />
+                                  </Button>
+                                </div>
+
+                                {/* Text Color */}
+                                <div className="flex items-center border-r border-gray-300 pr-2 mr-2">
+                                  <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <Palette className="h-4 w-4" />
+                                  </Button>
+                                  <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <Highlighter className="h-4 w-4" />
+                                  </Button>
+                                </div>
+
+                                {/* Lists */}
+                                <div className="flex items-center border-r border-gray-300 pr-2 mr-2">
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      if (contentRef.current) {
+                                        contentRef.current.focus();
+                                        document.execCommand('insertUnorderedList', false);
+                                        field.onChange(contentRef.current.innerHTML);
+                                      }
+                                    }}
+                                  >
+                                    <List className="h-4 w-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      if (contentRef.current) {
+                                        contentRef.current.focus();
+                                        document.execCommand('insertOrderedList', false);
+                                        field.onChange(contentRef.current.innerHTML);
+                                      }
+                                    }}
+                                  >
+                                    <ListOrdered className="h-4 w-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      if (contentRef.current) {
+                                        contentRef.current.focus();
+                                        document.execCommand('indent', false);
+                                        field.onChange(contentRef.current.innerHTML);
+                                      }
+                                    }}
+                                  >
+                                    <Indent className="h-4 w-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      if (contentRef.current) {
+                                        contentRef.current.focus();
+                                        document.execCommand('outdent', false);
+                                        field.onChange(contentRef.current.innerHTML);
+                                      }
+                                    }}
+                                  >
+                                    <Outdent className="h-4 w-4" />
+                                  </Button>
+                                </div>
+
+                                {/* Special Characters */}
+                                <div className="flex items-center border-r border-gray-300 pr-2 mr-2">
+                                  <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <Type className="h-4 w-4" />
+                                  </Button>
+                                  <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <Type className="h-4 w-4" />
+                                  </Button>
+                                </div>
+
+                                {/* Alignment */}
+                                <div className="flex items-center border-r border-gray-300 pr-2 mr-2">
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0"
+                                    onClick={() => document.execCommand('justifyLeft', false)}
+                                  >
+                                    <AlignLeft className="h-4 w-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0"
+                                    onClick={() => document.execCommand('justifyCenter', false)}
+                                  >
+                                    <AlignCenter className="h-4 w-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0"
+                                    onClick={() => document.execCommand('justifyRight', false)}
+                                  >
+                                    <AlignRight className="h-4 w-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0"
+                                    onClick={() => document.execCommand('justifyFull', false)}
+                                  >
+                                    <AlignJustify className="h-4 w-4" />
+                                  </Button>
+                                </div>
+
+                                {/* Links and Media */}
+                                <div className="flex items-center">
+                                  <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <Link className="h-4 w-4" />
+                                  </Button>
+                                  <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <ImageIcon className="h-4 w-4" />
+                                  </Button>
+                                  <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <Code className="h-4 w-4" />
+                                  </Button>
+                                  <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <Type className="h-4 w-4" />
+                                  </Button>
+                                </div>
                               </div>
 
-                              {/* Text Color */}
-                              <div className="flex items-center border-r border-gray-300 pr-2 mr-2">
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Palette className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Highlighter className="h-4 w-4" />
-                                </Button>
-                              </div>
-
-                              {/* Lists */}
-                              <div className="flex items-center border-r border-gray-300 pr-2 mr-2">
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <List className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <ListOrdered className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Indent className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Outdent className="h-4 w-4" />
-                                </Button>
-                              </div>
-
-                              {/* Special Characters */}
-                              <div className="flex items-center border-r border-gray-300 pr-2 mr-2">
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Type className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Type className="h-4 w-4" />
-                                </Button>
-                              </div>
-
-                              {/* Alignment */}
-                              <div className="flex items-center border-r border-gray-300 pr-2 mr-2">
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <AlignLeft className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <AlignCenter className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <AlignRight className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <AlignJustify className="h-4 w-4" />
-                                </Button>
-                              </div>
-
-                              {/* Links and Media */}
-                              <div className="flex items-center">
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Link className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <ImageIcon className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Code className="h-4 w-4" />
-                                </Button>
-                                <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <Type className="h-4 w-4" />
-                                </Button>
-                              </div>
+                              {/* Content Editable Div - Preserves formatting */}
+                              <div
+                                ref={contentRef}
+                                contentEditable
+                                suppressContentEditableWarning
+                                onPaste={handlePaste}
+                                onInput={handleInput}
+                                onBlur={handleBlur}
+                                data-placeholder="Write your blog content here..."
+                                className="content-editable min-h-[300px] p-4 border-0 resize-none focus:outline-none focus:ring-0 overflow-y-auto"
+                                style={{
+                                  whiteSpace: 'pre-wrap',
+                                  wordWrap: 'break-word',
+                                }}
+                              />
                             </div>
-
-                            {/* Content Textarea */}
-                            <Textarea 
-                              placeholder="Write your blog content here..."
-                              className="min-h-[300px] border-0 resize-none focus:ring-0"
-                              {...field} 
-                            />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
                   />
                 </CardContent>
               </Card>

@@ -1,0 +1,99 @@
+ /* Blog content display fixes - Comprehensive list styling */
+/* This ensures bullet points and numbered lists display correctly */
+
+/* Frontend blog content display fixes */
+.prose ul { 
+  list-style-type: disc !important; 
+  list-style-position: outside !important;
+  padding-left: 1.625em !important;
+  margin-left: 0 !important;
+  margin-top: 1.25em !important;
+  margin-bottom: 1.25em !important;
+}
+
+.prose ol { 
+  list-style-type: decimal !important; 
+  list-style-position: outside !important;
+  padding-left: 1.625em !important;
+  margin-left: 0 !important;
+  margin-top: 1.25em !important;
+  margin-bottom: 1.25em !important;
+}
+
+.prose ol,
+.prose ul { 
+  color: hsl(var(--muted-foreground)) !important; 
+}
+
+.prose ol li,
+.prose ul li { 
+  color: hsl(var(--muted-foreground)) !important; 
+  margin: 0.5em 0 !important;
+  padding-left: 0.375em !important;
+  display: list-item !important;
+}
+
+.prose ol li::marker,
+.prose ul li::marker { 
+  color: hsl(var(--foreground)) !important; 
+  font-weight: 500 !important;
+}
+
+.prose li p { 
+  margin: 0.75em 0 !important; 
+}
+
+.prose li > *:first-child {
+  margin-top: 0 !important;
+}
+
+.prose li > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+.prose li > ul,
+.prose li > ol { 
+  margin-top: 0.5em !important; 
+  margin-bottom: 0.5em !important; 
+  padding-left: 1.25rem !important; 
+}
+
+/* ContentEditable editor list styling - ensure bullet points are visible in editor */
+.content-editable ul { 
+  list-style-type: disc !important; 
+  list-style-position: outside !important;
+  padding-left: 1.625em !important;
+  margin-left: 0 !important;
+  margin-top: 1.25em !important;
+  margin-bottom: 1.25em !important;
+}
+
+.content-editable ol { 
+  list-style-type: decimal !important; 
+  list-style-position: outside !important;
+  padding-left: 1.625em !important;
+  margin-left: 0 !important;
+  margin-top: 1.25em !important;
+  margin-bottom: 1.25em !important;
+}
+
+.content-editable ol li,
+.content-editable ul li { 
+  margin: 0.5em 0 !important;
+  padding-left: 0.375em !important;
+  display: list-item !important;
+}
+
+.content-editable ol li::marker,
+.content-editable ul li::marker { 
+  color: hsl(var(--foreground)) !important; 
+  font-weight: 500 !important;
+}
+
+.content-editable li > ul,
+.content-editable li > ol { 
+  margin-top: 0.5em !important; 
+  margin-bottom: 0.5em !important; 
+  padding-left: 1.25rem !important; 
+}
+
