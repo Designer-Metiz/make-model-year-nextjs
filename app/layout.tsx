@@ -44,10 +44,12 @@ export const metadata = {
   },
   icons: {
     icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/assets/MMY-Favicon.ico', sizes: 'any' },
       { url: '/assets/Make-Model-year-logo-blueBG.png', sizes: '32x32', type: 'image/png' },
       { url: '/assets/Make-Model-year-logo-blueBG.png', sizes: '16x16', type: 'image/png' },
     ],
-    shortcut: '/assets/Make-Model-year-logo-blueBG.png',
+    shortcut: '/favicon.ico',
     apple: '/assets/Make-Model-year-logo-blueBG.png',
   },
   verification: {
