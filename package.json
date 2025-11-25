@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
+    "dev:clean": "powershell -ExecutionPolicy Bypass -File ./cleanup-and-start.ps1",
+    "clean": "powershell -ExecutionPolicy Bypass -Command \"Get-Process -Name node -ErrorAction SilentlyContinue | Stop-Process -Force; if (Test-Path .next) { Remove-Item .next -Recurse -Force }\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
