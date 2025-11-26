@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Contact Us – Make Model Year Support',
+  title: { absolute: 'Contact Us – Make Model Year Support' },
   description:
     'Get answers to your queries about car make, model, and year details. Our team is ready to assist you. Contact us now.',
 };
