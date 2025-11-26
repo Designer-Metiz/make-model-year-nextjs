@@ -13,8 +13,9 @@ import { BlogClient } from '@/components/blog/BlogClient';
 export const dynamic = 'force-dynamic';
 
 export const generateMetadata = async () => ({
-  title: 'Blog | Make Model Year',
-  description: 'Discover insights, tips, and strategies to grow your business.',
+  title: 'Make Model Year Blog – Car Tips, Guides & Updates',
+  description:
+    'Find useful tips, guides, and updates on car make, model, and year details. Stay informed with clear insights that support better decisions. Visit the blog now.',
 });
 
 async function getData(): Promise<BlogPost[]> {
