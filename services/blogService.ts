@@ -264,13 +264,32 @@ export class BlogService {
   }
 
   // Increment view count
-  static async incrementViews(id: number): Promise<void> {
-    const { error } = await (supabase as any).rpc('increment_views', {
-      post_id: id,
-    });
-
-    if (error) {
-      console.error('Error incrementing views:', error);
+  static async incrementViews(identifier: number | string): Promise<void> {
+    // Direct fallback: increment using a safe read-then-update to avoid RPC type mismatches
+    try {
+      if (typeof identifier === 'number') {
+        const { data, error: selErr } = await supabase
+          .from('blog_posts')
+          .select('views')
+          .eq('id', identifier)
+          .single();
+        if (!selErr && data) {
+          const nextViews = (data.views || 0) + 1;
+          await supabase.from('blog_posts').update({ views: nextViews }).eq('id', identifier);
+        }
+      } else {
+        const { data, error: selErr } = await supabase
+          .from('blog_posts')
+          .select('views')
+          .eq('slug', identifier)
+          .single();
+        if (!selErr && data) {
+          const nextViews = (data.views || 0) + 1;
+          await supabase.from('blog_posts').update({ views: nextViews }).eq('slug', identifier);
+        }
+      }
+    } catch (fallbackErr) {
+      console.error('Error incrementing views (fallback):', fallbackErr);
     }
   }
 
