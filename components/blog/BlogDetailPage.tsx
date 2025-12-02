@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, CalendarDays, Facebook, Linkedin, Loader2, Search, Share2, Twitter } from 'lucide-react';
@@ -10,6 +10,8 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import type { BlogPost } from '@/services/blogService';
 import { useBlogPost, useBlogPosts } from '@/hooks/useBlogData';
+import { AuthorService, type Author } from '@/services/authorService';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface Props {
   slug: string;
@@ -20,6 +22,29 @@ export default function BlogDetailPage({ slug, initialPost }: Props) {
   const { post, loading } = useBlogPost(slug, { initialPost });
   const { posts } = useBlogPosts();
   const [searchTerm, setSearchTerm] = useState('');
+  const [author, setAuthor] = useState<Author | null>(null);
+
+  // Load author details once post is available
+  useEffect(() => {
+    let active = true;
+    const loadAuthor = async () => {
+      if (!post?.author) {
+        setAuthor(null);
+        return;
+      }
+      try {
+        const a = await AuthorService.getByName(post.author);
+        if (!active) return;
+        setAuthor(a);
+      } catch {
+        if (active) setAuthor(null);
+      }
+    };
+    loadAuthor();
+    return () => {
+      active = false;
+    };
+  }, [post?.author]);
 
   function getCategory(p: BlogPost | null): string | null {
     if (!p) return null;
@@ -176,6 +201,47 @@ export default function BlogDetailPage({ slug, initialPost }: Props) {
                   />
                 </CardContent>
               </Card>
+
+              {/* Author Section */}
+              {author && (
+                <Card className="gradient-card border-0 shadow-card mb-8">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <Avatar className="w-16 h-16">
+                        <AvatarImage src={author.avatar_url || undefined} alt={author.name} />
+                        <AvatarFallback>{author.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-semibold mb-2 text-foreground">About {author.name}</h3>
+                        {author.bio && <p className="text-muted-foreground mb-4">{author.bio}</p>}
+                        <div className="flex gap-2">
+                          {author.twitter_url && (
+                            <Button size="sm" variant="outline" asChild>
+                              <a href={author.twitter_url} target="_blank" rel="noopener noreferrer">
+                                <Twitter className="w-4 h-4" />
+                              </a>
+                            </Button>
+                          )}
+                          {author.linkedin_url && (
+                            <Button size="sm" variant="outline" asChild>
+                              <a href={author.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                <Linkedin className="w-4 h-4" />
+                              </a>
+                            </Button>
+                          )}
+                          {author.facebook_url && (
+                            <Button size="sm" variant="outline" asChild>
+                              <a href={author.facebook_url} target="_blank" rel="noopener noreferrer">
+                                <Facebook className="w-4 h-4" />
+                              </a>
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
             </div>
 
             {/* Sidebar */}

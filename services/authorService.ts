@@ -40,6 +40,23 @@ export class AuthorService {
     }
   }
 
+  static async getByName(name: string): Promise<Author | null> {
+    try {
+      const { data, error } = await supabase
+        .from('authors')
+        .select('*')
+        .ilike('name', name) // case-insensitive match
+        .limit(1)
+        .maybeSingle();
+      if (error) throw error;
+      return (data as Author) ?? null;
+    } catch {
+      const authors = loadLocal();
+      const found = authors.find(a => a.name.toLowerCase() === name.toLowerCase());
+      return found ?? null;
+    }
+  }
+
   static async create(payload: CreateAuthorData): Promise<Author> {
     try {
       const { data, error } = await supabase
