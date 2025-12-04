@@ -32,7 +32,7 @@ const WhoIsThisFor = () => {
           Who Needs the Make Model Year App? 
           </h2>
           <div className="mx-auto mt-3 h-1 w-28 rounded-full bg-gradient-to-r from-primary/70 via-primary to-primary/70" />
-          <p className="mt-6 text-lg text-muted-foreground">
+          <p className="mt-6 text-lg text-foreground">
             This app is perfect for Shopify stores in the following industries
           </p>
         </div>

@@ -32,9 +32,9 @@ const HowItWorks = dynamic(() => import('@/components/HowItWorks'), { ssr: true 
 const Features = dynamic(() => import('@/components/Features'), { ssr: true });
 const WhoIsThisFor = dynamic(() => import('@/components/WhoIsThisFor'), { ssr: true });
 const PricingAndFeatures = dynamic(() => import('@/components/PricingAndFeatures'), { ssr: true });
-// Load Testimonials client-side after main content to reduce unused JS in critical path
+// Split Testimonials; keep SSR to comply with Server Component constraints
 const Testimonials = dynamic(() => import('@/components/Testimonials'), {
-  ssr: false,
+  ssr: true,
   loading: () => <section className="py-20" aria-hidden="true" />,
 });
 const Experience = dynamic(() => import('@/components/Experience'), { ssr: true });

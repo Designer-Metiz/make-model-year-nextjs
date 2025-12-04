@@ -47,7 +47,7 @@ const Testimonials = () => {
             What <span className="text-accent">Our Customers</span> Say
           </h2>
           <div className="mx-auto mt-3 h-1 w-28 rounded-full bg-gradient-to-r from-primary/70 via-primary to-primary/70" />
-          <p className="mt-6 text-lg leading-8 text-muted-foreground">
+          <p className="mt-6 text-lg leading-8 text-foreground">
             Join thousands of satisfied customers who trust Metizsoft
           </p>
         </div>

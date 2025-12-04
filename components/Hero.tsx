@@ -17,7 +17,7 @@ const Hero = () => {
               <span className="text-orange-700">Find Auto Parts in </span> Seconds with Smart<span className="text-orange-700"> Make Model Year </span> <span>Search</span>
             </h1>
  
-            <p className="text-xl text-muted-foreground mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
+            <p className="text-xl text-foreground mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
             Shopify Make Model Year search that improves accuracy, sales, and customer experience. 
             </p>
  
