@@ -1,5 +1,4 @@
 import './globals.css';
-import '@/styles/blog-content.css';
 import Script from 'next/script';
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
@@ -64,9 +63,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Google tag (gtag.js) - Next.js will automatically inject these into head */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-X6F1D16YWQ"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="ga-gtag" strategy="afterInteractive">
+        <Script id="ga-gtag" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}

@@ -185,7 +185,8 @@ export default function BlogDetailPage({ slug, initialPost }: Props) {
                     alt={post.title}
                     width={834}
                     height={384}
-                    loading="eager"
+                    priority
+                    sizes="(max-width: 834px) 100vw, 834px"
                     className="object-cover rounded-lg mx-auto"
                   />
                 </Card>

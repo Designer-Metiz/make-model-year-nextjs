@@ -1,3 +1,4 @@
+import '@/styles/blog-content.css';
 import Link from 'next/link';
 import { BlogServiceServer } from '@/services/blogServiceServer';
 import type { BlogPost } from '@/lib/supabase';

@@ -89,9 +89,25 @@ export function BlogClient({ posts }: BlogClientProps) {
                     <div className="md:col-span-1">
                       <div className="h-48 md:h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
                         {post.blog_image ? (
-                          <Image src={post.blog_image} alt={post.title} width={640} height={480} className="w-full h-full object-cover" />
+                          <Image
+                            src={post.blog_image}
+                            alt={post.title}
+                            width={640}
+                            height={480}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                            sizes="(min-width: 768px) 33vw, 100vw"
+                          />
                         ) : (
-                          <Image src="/placeholder.svg" alt={post.title} width={640} height={480} className="w-full h-full object-cover" />
+                          <Image
+                            src="/placeholder.svg"
+                            alt={post.title}
+                            width={640}
+                            height={480}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                            sizes="(min-width: 768px) 33vw, 100vw"
+                          />
                         )}
                       </div>
                     </div>

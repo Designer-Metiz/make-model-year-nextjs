@@ -22,16 +22,23 @@ export const generateMetadata = () => ({
 });
 
 import Script from 'next/script';
+import dynamic from 'next/dynamic';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
-import HowItWorks from '@/components/HowItWorks';
-import Features from '@/components/Features';
-import WhoIsThisFor from '@/components/WhoIsThisFor';
-import PricingAndFeatures from '@/components/PricingAndFeatures';
-import Testimonials from '@/components/Testimonials';
-import Experience from '@/components/Experience';
-import FAQ from '@/components/FAQ';
 import Footer from '@/components/Footer';
+
+// Split non-critical, below-the-fold sections
+const HowItWorks = dynamic(() => import('@/components/HowItWorks'), { ssr: true });
+const Features = dynamic(() => import('@/components/Features'), { ssr: true });
+const WhoIsThisFor = dynamic(() => import('@/components/WhoIsThisFor'), { ssr: true });
+const PricingAndFeatures = dynamic(() => import('@/components/PricingAndFeatures'), { ssr: true });
+// Load Testimonials client-side after main content to reduce unused JS in critical path
+const Testimonials = dynamic(() => import('@/components/Testimonials'), {
+  ssr: false,
+  loading: () => <section className="py-20" aria-hidden="true" />,
+});
+const Experience = dynamic(() => import('@/components/Experience'), { ssr: true });
+const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: true });
 
 export default function Page() {
   const ldJson = {
@@ -150,7 +157,7 @@ export default function Page() {
         <Script
           id="ldjson-home"
           type="application/ld+json"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJson) }}
         />
         <Hero />

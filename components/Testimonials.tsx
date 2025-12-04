@@ -57,7 +57,9 @@ const Testimonials = () => {
             {/* Navigation Arrows */}
             <button
               onClick={prevTestimonial}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 p-2 rounded-full bg-white shadow-lg hover:shadow-xl transition-shadow"
+              type="button"
+              aria-label="Previous testimonial"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 grid place-items-center h-12 w-12 rounded-full bg-white shadow-lg hover:shadow-xl transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               disabled={testimonials.length <= 1}
             >
               <ChevronLeft className="w-5 h-5 text-gray-600" />
@@ -65,7 +67,9 @@ const Testimonials = () => {
            
             <button
               onClick={nextTestimonial}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 p-2 rounded-full bg-white shadow-lg hover:shadow-xl transition-shadow"
+              type="button"
+              aria-label="Next testimonial"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 grid place-items-center h-12 w-12 rounded-full bg-white shadow-lg hover:shadow-xl transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               disabled={testimonials.length <= 1}
             >
               <ChevronRight className="w-5 h-5 text-gray-600" />
@@ -151,10 +155,18 @@ const Testimonials = () => {
                   <button
                     key={index}
                     onClick={() => setCurrentIndex(index)}
-                    className={`w-3 h-3 rounded-full transition-colors ${
-                      index === currentIndex ? 'bg-primary' : 'bg-gray-300'
-                    }`}
-                  />
+                    type="button"
+                    aria-label={`Go to testimonial ${index + 1}`}
+                    aria-current={index === currentIndex ? 'true' : undefined}
+                    className="relative inline-flex items-center justify-center h-10 w-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`block w-2.5 h-2.5 rounded-full transition-colors ${
+                        index === currentIndex ? 'bg-primary' : 'bg-gray-300'
+                      }`}
+                    />
+                  </button>
                 ))}
               </div>
             )}

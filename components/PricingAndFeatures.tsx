@@ -1,15 +1,19 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  CarouselApi,
-} from "@/components/ui/carousel";
+import dynamic from "next/dynamic";
+import type { CarouselApi } from "@/components/ui/carousel";
+// Defer loading of the carousel (and Embla) to when the section is in view
+const Carousel = dynamic(() => import("@/components/ui/carousel").then((m) => m.Carousel), { ssr: false });
+const CarouselContent = dynamic(() => import("@/components/ui/carousel").then((m) => m.CarouselContent), {
+  ssr: false,
+});
+const CarouselItem = dynamic(() => import("@/components/ui/carousel").then((m) => m.CarouselItem), { ssr: false });
+const CarouselNext = dynamic(() => import("@/components/ui/carousel").then((m) => m.CarouselNext), { ssr: false });
+const CarouselPrevious = dynamic(() => import("@/components/ui/carousel").then((m) => m.CarouselPrevious), {
+  ssr: false,
+});
 import { Check } from "lucide-react";
 import Image from "next/image";
  
@@ -68,6 +72,81 @@ const carouselFeatures = [
   }
 ];
  
+function LazyCarousel({ setApi }: { setApi: (api: CarouselApi) => void }) {
+  const mountRef = useRef<HTMLDivElement | null>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    if (!mountRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px 0px" },
+    );
+    observer.observe(mountRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={mountRef}>
+      {isInView ? (
+        <Carousel className="w-full" setApi={setApi}>
+          <CarouselContent>
+            {carouselFeatures.map((feature) => (
+              <CarouselItem key={feature.id}>
+                <Card className="border-0 shadow-lg">
+                  <CardContent className="p-0">
+                    <div className="aspect-video relative overflow-hidden rounded-lg">
+                      <Image
+                        src={feature.image}
+                        alt={feature.alt}
+                        className="w-full h-full object-cover"
+                        width={1200}
+                        height={675}
+                        sizes="(min-width: 1280px) 900px, (min-width: 1024px) 720px, 95vw"
+                      />
+                    </div>
+                    <div className="p-6 text-center">
+                      <h3 className="text-xl font-semibold text-foreground mb-2">{feature.title}</h3>
+                      <p className="text-muted-foreground">{feature.description}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      ) : (
+        // Lightweight fallback (first slide) until the carousel is needed
+        <Card className="border-0 shadow-lg">
+          <CardContent className="p-0">
+            <div className="aspect-video relative overflow-hidden rounded-lg">
+              <Image
+                src={carouselFeatures[0].image}
+                alt={carouselFeatures[0].alt}
+                className="w-full h-full object-cover"
+                width={1200}
+                height={675}
+                sizes="(min-width: 1280px) 900px, (min-width: 1024px) 720px, 95vw"
+              />
+            </div>
+            <div className="p-6 text-center">
+              <h3 className="text-xl font-semibold text-foreground mb-2">{carouselFeatures[0].title}</h3>
+              <p className="text-muted-foreground">{carouselFeatures[0].description}</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
 const PricingAndFeatures = () => {
   const [api, setApi] = useState<CarouselApi>();
  
@@ -163,37 +242,7 @@ const PricingAndFeatures = () => {
                   Discover all the capabilities of our Auto Parts Search solution
                 </p>
               </div>
-              <Carousel className="w-full" setApi={setApi}>
-                <CarouselContent>
-                  {carouselFeatures.map((feature) => (
-                    <CarouselItem key={feature.id}>
-                      <Card className="border-0 shadow-lg">
-                        <CardContent className="p-0">
-                          <div className="aspect-video relative overflow-hidden rounded-lg">
-                            <Image
-                              src={feature.image}
-                              alt={feature.alt}
-                              className="w-full h-full object-cover"
-                              width={1200}
-                              height={675}
-                            />
-                          </div>
-                          <div className="p-6 text-center">
-                            <h3 className="text-xl font-semibold text-foreground mb-2">
-                              {feature.title}
-                            </h3>
-                            <p className="text-muted-foreground">
-                              {feature.description}
-                            </p>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
+              <LazyCarousel setApi={setApi} />
             </div>
           </div>
         </div>

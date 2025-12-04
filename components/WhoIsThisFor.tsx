@@ -72,7 +72,7 @@ const WhoIsThisFor = () => {
                   <h3 className="text-xl font-semibold text-foreground mb-4">
                     {industry.title}
                   </h3>
-                  <p className="text-muted-foreground text-base leading-relaxed">
+                <p className="text-foreground text-base leading-relaxed">
                     {industry.description}
                   </p>
                 </div>

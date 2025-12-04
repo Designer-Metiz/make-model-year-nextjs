@@ -14,7 +14,7 @@ const Hero = () => {
           {/* Left Content */}
           <div className="text-center lg:text-left">
             <h1 className="text-4xl lg:text-[3.25rem] font-bold mb-6 leading-[1.1]" style={{ color: '#1c154c' }}>
-              <span style={{ color: '#f97316' }}>Find Auto Parts in </span> Seconds with Smart<span style={{ color: '#f97316' }}> Make Model Year </span> <span>Search</span>
+              <span className="text-orange-700">Find Auto Parts in </span> Seconds with Smart<span className="text-orange-700"> Make Model Year </span> <span>Search</span>
             </h1>
  
             <p className="text-xl text-muted-foreground mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
@@ -67,7 +67,10 @@ const Hero = () => {
                   alt="Shopper using a Make-Model-Year dropdown filter on an auto parts Shopify store"
                   className="w-full rounded-md object-contain"
                   width={1200}
-                  height={800}
+                  height={675}
+                  priority
+                  fetchPriority="high"
+                  sizes="(min-width: 1280px) 640px, (min-width: 1024px) 560px, 92vw"
                 />
                 {/* Laptop bottom */}
                 <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gray-400 rounded-full"></div>

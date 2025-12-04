@@ -1,3 +1,4 @@
+import '@/styles/blog-content.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Search, Calendar, User, Eye, ArrowRight } from 'lucide-react';
