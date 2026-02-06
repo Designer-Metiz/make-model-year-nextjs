@@ -84,7 +84,7 @@ export default function Page() {
         mainEntity: [
           {
             '@type': 'Question',
-            name: 'What is MSPL AutoPartsFinderPro?',
+            name: 'What is MSPL Make Model Year?',
             acceptedAnswer: {
               '@type': 'Answer',
               text: "It's a Shopify app that adds a Make, Model, and Year search to your store, making it easier for customers to find what they're looking for.",
@@ -119,7 +119,7 @@ export default function Page() {
             name: 'Does it work with my Shopify theme?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Yes, MSPL AutoPartsFinderPro works with all the latest Shopify themes and integrates seamlessly with your store design.',
+              text: 'Yes, MSPL Make Model Year works with all the latest Shopify themes and integrates seamlessly with your store design.',
             },
           },
           {

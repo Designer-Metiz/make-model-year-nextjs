@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <h3 className="text-2xl font-semibold mb-3 text-white">About the App</h3>
             <p className="text-white text-base leading-relaxed max-w-xl">
-              MSPL AutoPartsFinderPro by Metizsoft helps Shopify merchants streamline the product search experience,
+              MSPL Make Model Year by Metizsoft helps Shopify merchants streamline the product search experience,
               allowing customers to find the exact parts they need quickly and efficiently.
             </p>
           </div>

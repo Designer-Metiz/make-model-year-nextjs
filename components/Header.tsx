@@ -12,7 +12,7 @@ const Header = () => {
             <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary overflow-hidden" style={{ backgroundColor: '#0b37c7' }}>
               <Image
                 src="/assets/new-logo.png"
-                alt="MSPL AutoPartsFinderPro logo"
+                alt="MSPL Make Model Year logo"
                 className="w-full h-full object-contain p-1.5"
                 draggable={false}
                 width={40}
@@ -20,7 +20,7 @@ const Header = () => {
               />
             </div>
             <span className="font-semibold text-lg text-primary" style={{ color: '#1c154c' }}>
-              MSPL AutoPartsFinderPro
+              MSPL Make Model Year
             </span>
           </a>
         </div>
