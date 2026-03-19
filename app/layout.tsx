@@ -62,7 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body suppressHydrationWarning={true}>
         {/* Google tag (gtag.js) - Next.js will automatically inject these into head */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-X6F1D16YWQ"
+          src="https://www.googletagmanager.com/gtag/js?id=G-BX6CWPCTLE"
           strategy="lazyOnload"
         />
         <Script id="ga-gtag" strategy="lazyOnload">
@@ -70,7 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-X6F1D16YWQ');
+            gtag('config', 'G-BX6CWPCTLE');
           `}
         </Script>
         {children}
