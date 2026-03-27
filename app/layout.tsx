@@ -1,5 +1,4 @@
 import './globals.css';
-import Script from 'next/script';
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: {
@@ -60,18 +59,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-BX6CWPCTLE"
-          strategy="afterInteractive"
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-BX6CWPCTLE"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-BX6CWPCTLE');
+            `,
+          }}
         />
-        <Script id="ga-gtag" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-BX6CWPCTLE');
-          `}
-        </Script>
       </head>
       <body suppressHydrationWarning={true}>
         {children}
