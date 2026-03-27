@@ -52,20 +52,19 @@ export const metadata = {
     apple: '/assets/Make-Model-year-logo-blueBG.png',
   },
   verification: {
-    google: 'CMytYuT0pIESVq4wKjt-iVkDggavO4IcuoeDtiLeQH8',
+    google: 'wf0wXY0_57rFb9yhC-HeICobNTHU8c-Iun20dXU3Ihs',
   },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body suppressHydrationWarning={true}>
-        {/* Google tag (gtag.js) - Next.js will automatically inject these into head */}
+      <head>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-BX6CWPCTLE"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
         />
-        <Script id="ga-gtag" strategy="lazyOnload">
+        <Script id="ga-gtag" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -73,6 +72,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             gtag('config', 'G-BX6CWPCTLE');
           `}
         </Script>
+      </head>
+      <body suppressHydrationWarning={true}>
         {children}
       </body>
     </html>
