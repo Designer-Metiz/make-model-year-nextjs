@@ -73,6 +73,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body suppressHydrationWarning={true}>
         {children}
+        {/* Zoho SalesIQ live chat widget */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}`,
+          }}
+        />
+        <script
+          id="zsiqscript"
+          src="https://salesiq.zohopublic.com/widget?wc=siq552498784fd12a0133dd92b74bac529520573f8dc546601075130cfee568405d9a756a2eb4968d571f1b577ed8e25ae8"
+          defer
+        />
       </body>
     </html>
   );
